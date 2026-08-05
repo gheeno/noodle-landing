@@ -1,0 +1,779 @@
+/* ==========================================================================
+   Noodle — landing page
+   80s synthwave / cyberpunk. Blurred scene behind, crisp pixel art in front.
+   ========================================================================== */
+
+/* --- self-hosted fonts (SIL Open Font License, see assets/fonts/README.md) --- */
+
+@font-face {
+  font-family: 'Press Start 2P';
+  src: url('../fonts/press-start-2p-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Chakra Petch';
+  src: url('../fonts/chakra-petch-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Chakra Petch';
+  src: url('../fonts/chakra-petch-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Chakra Petch';
+  src: url('../fonts/chakra-petch-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --ink:        #05010f;
+  --ink-2:      #0b0221;
+  --magenta:    #ff2d95;
+  --cyan:       #23e5ff;
+  --violet:     #7a1bff;
+  --amber:      #ffb03a;
+  --paper:      #ffe9fb;
+  --paper-dim:  #c9a8d8;
+
+  --pixel: 'Press Start 2P', 'Courier New', monospace;
+  --ui:    'Chakra Petch', 'Trebuchet MS', system-ui, sans-serif;
+  --mono:  ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+
+  --horizon: 60%;
+}
+
+* { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--ui);
+  font-size: 17px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   1. The scene — everything in here is blurred
+   ========================================================================== */
+
+.scene {
+  position: fixed;
+  inset: -8%;                       /* overscan so blurred edges stay off-screen */
+  z-index: 0;
+  overflow: hidden;
+  filter: blur(13px) saturate(1.45);
+  transform: translateZ(0);
+}
+
+.sky {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg,
+      #04010d   0%,
+      #10033a  18%,
+      #3d0a78  36%,
+      #94157a  50%,
+      #ff5f7d  57%,
+      #ffc861  60%,
+      #2a0246  64%,
+      #12022c 100%);
+}
+
+.stars {
+  position: absolute;
+  left: 0; right: 0; top: 0; height: 46%;
+  background-image:
+    radial-gradient(2px 2px at 12% 18%, #fff, transparent),
+    radial-gradient(2px 2px at 27% 42%, #cfe9ff, transparent),
+    radial-gradient(2px 2px at 41%  9%, #fff, transparent),
+    radial-gradient(3px 3px at 58% 27%, #ffd6f2, transparent),
+    radial-gradient(2px 2px at 71% 13%, #fff, transparent),
+    radial-gradient(2px 2px at 83% 35%, #cfe9ff, transparent),
+    radial-gradient(2px 2px at 92% 20%, #fff, transparent),
+    radial-gradient(2px 2px at 5%  48%, #fff, transparent);
+  opacity: .8;
+}
+
+/* the big sinking sun */
+.sun {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% - var(--horizon) - 2%);
+  width: 58vmin;
+  height: 58vmin;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: linear-gradient(180deg,
+    #fffbd6  0%,
+    #ffe066 20%,
+    #ff9a3d 46%,
+    #ff2d95 76%,
+    #c81ad6 100%);
+  box-shadow: 0 0 22vmin rgba(255, 90, 140, .55);
+}
+
+.sun::after {                       /* the classic banding across the lower half */
+  content: '';
+  position: absolute;
+  inset: 44% 0 0 0;
+  background: repeating-linear-gradient(180deg,
+    transparent 0 11px,
+    rgba(22, 2, 48, .9) 11px 20px);
+}
+
+/* skyline sitting on the horizon */
+.city {
+  position: absolute;
+  left: -5%; right: -5%;
+  top: calc(var(--horizon) - 70px);
+  height: 70px;
+  background: linear-gradient(180deg, #2b0a52, #150330);
+  clip-path: polygon(
+    0% 100%,  0% 62%,  3% 62%,  3% 40%,  7% 40%,  7% 72%, 11% 72%,
+    11% 30%, 14% 30%, 14% 66%, 19% 66%, 19% 48%, 23% 48%, 23% 78%,
+    28% 78%, 28% 34%, 31% 34%, 31% 70%, 36% 70%, 36% 55%, 40% 55%,
+    40% 80%, 45% 80%, 45% 26%, 48% 26%, 48% 64%, 53% 64%, 53% 44%,
+    57% 44%, 57% 76%, 62% 76%, 62% 36%, 66% 36%, 66% 68%, 71% 68%,
+    71% 50%, 75% 50%, 75% 82%, 80% 82%, 80% 32%, 83% 32%, 83% 70%,
+    88% 70%, 88% 54%, 92% 54%, 92% 74%, 96% 74%, 96% 44%, 100% 44%,
+    100% 100%);
+}
+
+/* mountain ridge just behind it */
+.ridge {
+  position: absolute;
+  left: -5%; right: -5%;
+  top: calc(var(--horizon) - 130px);
+  height: 130px;
+  background: linear-gradient(180deg, rgba(58, 10, 96, .9), rgba(20, 3, 48, .95));
+  clip-path: polygon(
+    0% 100%, 0% 70%, 9% 34%, 16% 62%, 24% 22%, 33% 58%, 41% 40%,
+    50% 8%, 58% 46%, 67% 26%, 76% 60%, 85% 36%, 93% 64%, 100% 46%,
+    100% 100%);
+}
+
+/* neon horizon line */
+.city::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -3px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--cyan), #fff, var(--magenta));
+}
+
+/* the perspective floor */
+.floor {
+  position: absolute;
+  left: 0; right: 0;
+  top: var(--horizon);
+  bottom: 0;
+  overflow: hidden;
+  perspective: 190px;
+  perspective-origin: 50% 0%;
+  background: linear-gradient(180deg, #22043f 0%, #0a0120 70%);
+}
+
+.floor-grid {
+  position: absolute;
+  left: -60%; right: -60%;
+  top: 0;
+  height: 340%;
+  transform: rotateX(70deg);
+  transform-origin: 50% 0;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(60, 240, 255, .9) 0 3px, transparent 3px 84px),
+    repeating-linear-gradient(0deg,  rgba(255, 60, 160, .9) 0 3px, transparent 3px 84px);
+  animation: floor-scroll 2.4s linear infinite;
+}
+
+@keyframes floor-scroll {
+  to { background-position: 0 84px, 0 84px; }
+}
+
+/* drifting colour haze */
+.haze {
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  opacity: .3;
+}
+
+.haze-a {
+  left: -18vmax; top: -12vmax;
+  background: radial-gradient(circle, rgba(122, 27, 255, .85), transparent 62%);
+  animation: drift-a 22s ease-in-out infinite alternate;
+}
+
+.haze-b {
+  right: -22vmax; top: 8vmax;
+  background: radial-gradient(circle, rgba(255, 45, 149, .7), transparent 62%);
+  animation: drift-b 27s ease-in-out infinite alternate;
+}
+
+@keyframes drift-a { to { transform: translate3d(12vmax, 8vmax, 0) scale(1.15); } }
+@keyframes drift-b { to { transform: translate3d(-14vmax, 6vmax, 0) scale(1.1); } }
+
+/* ==========================================================================
+   2. CRT overlay — sharp, sits above the blur, below the content
+   ========================================================================== */
+
+.crt {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(180deg,
+    rgba(0, 0, 0, .30) 0 1px,
+    transparent 1px 3px);
+  opacity: .6;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(125% 95% at 50% 42%,
+    transparent 38%, rgba(3, 0, 12, .82) 100%);
+}
+
+/* one-off CRT power-on wipe */
+body.booting main,
+body.booting .topbar,
+body.booting .footer { animation: boot-in .9s ease-out both; }
+
+@keyframes boot-in {
+  0%   { opacity: 0; transform: scaleY(.004); filter: brightness(4); }
+  35%  { opacity: 1; transform: scaleY(.004); filter: brightness(4); }
+  60%  { transform: scaleY(1); filter: brightness(1.8); }
+  100% { transform: scaleY(1); filter: brightness(1); }
+}
+
+/* ==========================================================================
+   3. Foreground chrome
+   ========================================================================== */
+
+.topbar, main, .footer { position: relative; z-index: 3; }
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px clamp(16px, 4vw, 48px);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-family: var(--pixel);
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: var(--paper);
+}
+
+.brand-dot {
+  width: 10px; height: 10px;
+  background: var(--magenta);
+  box-shadow: 0 0 10px var(--magenta), 0 0 22px var(--magenta);
+  animation: blip 2.2s ease-in-out infinite;
+}
+
+@keyframes blip { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+
+.brand-name { text-shadow: 0 0 14px rgba(255, 45, 149, .8); }
+
+.topnav {
+  display: flex;
+  gap: clamp(14px, 3vw, 30px);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.topnav a {
+  color: var(--paper-dim);
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+  transition: color .2s, border-color .2s, text-shadow .2s;
+}
+
+.topnav a:hover {
+  color: var(--cyan);
+  border-bottom-color: var(--cyan);
+  text-shadow: 0 0 12px rgba(35, 229, 255, .9);
+}
+
+/* ==========================================================================
+   4. Hero
+   ========================================================================== */
+
+.hero {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: clamp(18px, 4vh, 48px) clamp(18px, 5vw, 32px) 72px;
+  text-align: center;
+}
+
+/* --- the bowl ------------------------------------------------------------ */
+
+.logo-stage {
+  position: relative;
+  width: min(380px, 70vw);
+  margin: 0 auto clamp(90px, 14vw, 130px);
+}
+
+.logo-halo {
+  position: absolute;
+  left: 50%; top: 52%;
+  width: 155%; height: 155%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle,
+    rgba(255, 122, 61, .26) 0%,
+    rgba(255, 45, 149, .28) 34%,
+    rgba(122, 27, 255, .20) 56%,
+    transparent 72%);
+  filter: blur(14px);
+  animation: halo 3.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes halo {
+  0%, 100% { opacity: .7; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 1;  transform: translate(-50%, -50%) scale(1.09); }
+}
+
+.logo {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+  filter:
+    drop-shadow(0 0 20px rgba(255, 45, 149, .55))
+    drop-shadow(0 0 52px rgba(122, 27, 255, .45))
+    drop-shadow(0 16px 26px rgba(0, 0, 0, .65));
+  animation: float 5.5s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0)     rotate(-.5deg); }
+  50%      { transform: translateY(-15px) rotate(.5deg); }
+}
+
+.logo-reflection {
+  position: absolute;
+  left: 0;
+  top: 96%;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+  transform: scaleY(-1);
+  opacity: .32;
+  filter: blur(3px) saturate(1.4);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 34%, #000 100%);
+  mask-image: linear-gradient(to bottom, transparent 34%, #000 100%);
+  pointer-events: none;
+}
+
+/* --- wordmark ------------------------------------------------------------ */
+
+.kicker {
+  margin: 0 0 14px;
+  font-family: var(--pixel);
+  font-size: clamp(8px, 1.6vw, 11px);
+  letter-spacing: .18em;
+  color: var(--cyan);
+  text-shadow:
+    0 0 14px rgba(35, 229, 255, .9),
+    0 2px 10px rgba(3, 0, 12, .95),
+    0 0 26px rgba(3, 0, 12, .8);
+}
+
+.wordmark {
+  margin: 0 0 22px;
+  font-family: var(--pixel);
+  font-size: clamp(2.1rem, 9.2vw, 5.6rem);
+  line-height: 1.1;
+  letter-spacing: .04em;
+}
+
+.wordmark-text {
+  position: relative;
+  display: inline-block;
+  background: linear-gradient(180deg,
+    #ffffff 0%, #ffe3f7 30%, #ff65b6 56%, #ff2d95 74%, #7a1bff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter:
+    drop-shadow(0 0 16px rgba(255, 45, 149, .65))
+    drop-shadow(0 0 44px rgba(122, 27, 255, .55));
+}
+
+/* chromatic-aberration ghost */
+.wordmark-text::before {
+  content: attr(data-text);
+  position: absolute;
+  left: -4px; top: 3px;
+  z-index: -1;
+  color: var(--cyan);
+  -webkit-text-fill-color: var(--cyan);
+  background: none;
+  opacity: .55;
+  filter: blur(.4px);
+}
+
+.tagline {
+  max-width: 720px;
+  margin: 0 auto 14px;
+  font-size: clamp(1.05rem, 2.4vw, 1.45rem);
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, .8);
+}
+
+.tagline b { color: var(--cyan); font-weight: 700; }
+.tagline .hot { color: var(--amber); text-shadow: 0 0 16px rgba(255, 176, 58, .8); }
+
+.subtagline {
+  max-width: 640px;
+  margin: 0 auto 32px;
+  font-size: clamp(.95rem, 1.9vw, 1.05rem);
+  color: var(--paper-dim);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, .85);
+}
+
+/* --- buttons ------------------------------------------------------------- */
+
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: clamp(40px, 7vw, 64px);
+}
+
+.btn {
+  --glow: var(--magenta);
+  position: relative;
+  display: inline-block;
+  padding: 15px 26px;
+  font-family: var(--pixel);
+  font-size: clamp(9px, 1.5vw, 11px);
+  letter-spacing: .08em;
+  text-decoration: none;
+  color: #fff;
+  background: rgba(10, 2, 30, .55);
+  border: 2px solid var(--glow);
+  box-shadow: 0 0 14px var(--glow), inset 0 0 14px rgba(255, 255, 255, .07);
+  text-shadow: 0 0 10px var(--glow);
+  backdrop-filter: blur(4px);
+  transition: transform .15s, box-shadow .2s, background .2s;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, .10);
+  box-shadow: 0 0 26px var(--glow), 0 0 60px var(--glow), inset 0 0 18px rgba(255, 255, 255, .12);
+}
+
+.btn:active { transform: translateY(0); }
+
+.btn-hot  { --glow: var(--magenta); }
+.btn-cool { --glow: var(--cyan); }
+
+/* --- code card ----------------------------------------------------------- */
+
+.code-card {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: left;
+  background: rgba(8, 2, 24, .72);
+  border: 1px solid rgba(255, 45, 149, .5);
+  box-shadow:
+    0 0 0 1px rgba(35, 229, 255, .18),
+    0 20px 60px rgba(0, 0, 0, .7),
+    0 0 42px rgba(122, 27, 255, .3);
+  backdrop-filter: blur(7px);
+}
+
+.code-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 45, 149, .3);
+  background: rgba(255, 45, 149, .10);
+}
+
+.led { width: 10px; height: 10px; border-radius: 50%; }
+.led-r { background: #ff4d6d; box-shadow: 0 0 8px #ff4d6d; }
+.led-y { background: #ffd24a; box-shadow: 0 0 8px #ffd24a; }
+.led-g { background: #46f08a; box-shadow: 0 0 8px #46f08a; }
+
+.code-file {
+  margin-left: 8px;
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: .06em;
+  color: var(--paper-dim);
+}
+
+.code {
+  margin: 0;
+  padding: 18px 20px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: clamp(12px, 2.2vw, 14px);
+  line-height: 1.75;
+  color: #e9dcff;
+}
+
+.c-tag { color: var(--amber); }
+.c-key { color: var(--magenta); font-weight: 600; }
+.c-str { color: #46f08a; }
+.c-var { color: var(--cyan); }
+.c-txt { color: #fff; }
+
+.code-foot {
+  padding: 11px 20px;
+  border-top: 1px solid rgba(35, 229, 255, .28);
+  background: rgba(35, 229, 255, .07);
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--paper-dim);
+}
+
+.prompt { color: var(--magenta); }
+.ok { color: #46f08a; }
+
+/* ==========================================================================
+   5. Feature strip + woks
+   ========================================================================== */
+
+.strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 clamp(18px, 5vw, 32px) 72px;
+}
+
+.card {
+  padding: 26px 24px;
+  background: rgba(10, 2, 30, .6);
+  border: 1px solid rgba(122, 27, 255, .55);
+  box-shadow: inset 0 0 30px rgba(122, 27, 255, .16);
+  backdrop-filter: blur(6px);
+  transition: transform .2s, border-color .2s, box-shadow .2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--cyan);
+  box-shadow: 0 0 28px rgba(35, 229, 255, .3), inset 0 0 30px rgba(35, 229, 255, .12);
+}
+
+.card h2 {
+  margin: 0 0 12px;
+  font-family: var(--pixel);
+  font-size: 11px;
+  letter-spacing: .08em;
+  line-height: 1.7;
+  color: var(--cyan);
+  text-shadow: 0 0 14px rgba(35, 229, 255, .7);
+}
+
+.card p { margin: 0; font-size: .98rem; color: var(--paper-dim); }
+
+.woks {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 clamp(18px, 5vw, 32px) 64px;
+  text-align: center;
+}
+
+.woks-label {
+  margin: 0 0 18px;
+  font-family: var(--pixel);
+  font-size: 10px;
+  letter-spacing: .2em;
+  color: var(--magenta);
+  text-shadow:
+    0 0 14px rgba(255, 45, 149, .85),
+    0 2px 10px rgba(3, 0, 12, .95),
+    0 0 26px rgba(3, 0, 12, .85);
+}
+
+.wok-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin: 0 0 18px;
+  padding: 0;
+  list-style: none;
+}
+
+.wok-list li {
+  padding: 9px 18px;
+  font-family: var(--pixel);
+  font-size: 10px;
+  letter-spacing: .08em;
+  color: var(--paper);
+  border: 1px solid rgba(35, 229, 255, .55);
+  background: rgba(35, 229, 255, .07);
+  box-shadow: 0 0 14px rgba(35, 229, 255, .2);
+}
+
+.woks-note { margin: 0; font-size: .95rem; color: var(--paper-dim); }
+
+/* ==========================================================================
+   5b. TENYKS — outrun chrome wordmark
+   Three stacked copies of the same text: a heavy dark keyline behind, the
+   chrome gradient itself, and scanline bands masked over the lower half.
+   ========================================================================== */
+
+.tenyks {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 56px clamp(18px, 5vw, 32px) 78px;
+  border-top: 1px solid rgba(35, 229, 255, .22);
+  text-align: center;
+}
+
+.tenyks-mark {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  font-family: var(--ui);
+  font-weight: 700;
+  font-size: clamp(2.9rem, 12vw, 6.2rem);
+  line-height: 1.05;
+  letter-spacing: .16em;
+  text-indent: .16em;               /* balances the trailing letter-space */
+  text-transform: uppercase;
+  transform: skewX(-8deg);
+
+  /* the chrome: cool metal above the split, sunset below it */
+  background: linear-gradient(180deg,
+    #ffffff  0%,
+    #e4f8ff 16%,
+    #8fdfff 36%,
+    #45b8f7 47%,
+    #ffffff 49.5%,                  /* the chrome highlight line */
+    #ffffff 51%,
+    #ff2d95 53%,
+    #ff6b5c 72%,
+    #ffa23c 88%,
+    #ffe98a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter:
+    drop-shadow(0 0 22px rgba(35, 229, 255, .65))
+    drop-shadow(0 0 60px rgba(255, 45, 149, .6));
+}
+
+/* dark keyline behind, so the chrome reads against the scene */
+.tenyks-mark::before {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  /* em-based so the keyline tracks the type instead of clogging it on mobile */
+  -webkit-text-stroke: .055em #0d0126;
+}
+
+/* scanline bands, lower half only */
+.tenyks-mark::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: repeating-linear-gradient(180deg,
+    transparent 0 .085em,
+    rgba(11, 1, 34, .34) .085em .115em);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-mask-image: linear-gradient(180deg, transparent 54%, #000 62%);
+  mask-image: linear-gradient(180deg, transparent 54%, #000 62%);
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   6. Footer
+   ========================================================================== */
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  padding: 26px 20px 40px;
+  border-top: 1px solid rgba(255, 45, 149, .28);
+  font-family: var(--pixel);
+  font-size: 9px;
+  letter-spacing: .12em;
+  color: var(--paper-dim);
+}
+
+.footer .sep { color: var(--magenta); }
+
+/* ==========================================================================
+   7. Motion / small screens
+   ========================================================================== */
+
+@media (max-width: 640px) {
+  .topnav { font-size: 13px; }
+  .logo-stage { margin-bottom: 86px; }
+  .logo-reflection { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .floor-grid, .haze, .logo, .logo-halo, .brand-dot,
+  body.booting main, body.booting .topbar, body.booting .footer {
+    animation: none !important;
+  }
+  .btn:hover, .card:hover { transform: none; }
+}

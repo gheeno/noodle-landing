@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Noodle — deterministic tests in plain English</title>
+<meta name="description" content="Noodle test framework — a capability for AI and humans to generate deterministic tests using plain English BDD.">
+<meta name="theme-color" content="#0b0221">
+
+<meta property="og:title" content="Noodle — deterministic tests in plain English">
+<meta property="og:description" content="A capability for AI and humans to generate deterministic tests using plain English BDD.">
+<meta property="og:type" content="website">
+
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/press-start-2p-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/chakra-petch-600.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+<!-- ============ blurred synthwave scene (background) ============ -->
+<div class="scene" aria-hidden="true">
+  <div class="sky"></div>
+  <div class="stars"></div>
+  <div class="sun"></div>
+  <div class="city"></div>
+  <div class="ridge"></div>
+  <div class="floor"><div class="floor-grid"></div></div>
+  <div class="haze haze-a"></div>
+  <div class="haze haze-b"></div>
+</div>
+
+<!-- ============ crisp CRT overlay (not blurred) ============ -->
+<div class="crt" aria-hidden="true">
+  <div class="scanlines"></div>
+  <div class="vignette"></div>
+</div>
+
+<!-- ============ foreground ============ -->
+<header class="topbar">
+  <a class="brand" href="#top">
+    <span class="brand-dot"></span>
+    <span class="brand-name">NOODLE</span>
+  </a>
+  <nav class="topnav">
+    <a href="#what">What</a>
+    <a href="#woks">Woks</a>
+    <a href="https://github.com/gheeno/noodle" rel="noreferrer">GitHub</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+
+    <div class="logo-stage" data-parallax="18">
+      <div class="logo-halo"></div>
+      <img class="logo" src="assets/img/noodle-bowl-hot.svg"
+           alt="Noodle: a pixel-art ramen bowl with steam rising from it"
+           width="320" height="240">
+      <img class="logo-reflection" src="assets/img/noodle-bowl-hot.svg" alt="" aria-hidden="true">
+    </div>
+
+    <p class="kicker">TEST FRAMEWORK &nbsp;//&nbsp; v1.0 ALPHA</p>
+
+    <h1 class="wordmark" data-parallax="8">
+      <span class="wordmark-text" data-text="NOODLE">NOODLE</span>
+    </h1>
+
+    <p class="tagline">
+      A capability for <b>AI</b> and <b>humans</b> to generate
+      <b class="hot">deterministic tests</b> using plain&nbsp;English&nbsp;BDD.
+    </p>
+
+    <p class="subtagline">
+      No selectors. No page objects. No step definitions. No code.
+      Tell Noodle what to test &mdash; it writes the noodles, so you don't have to.
+    </p>
+
+    <div class="cta-row">
+      <a class="btn btn-hot" href="https://github.com/gheeno/noodle" rel="noreferrer">GET NOODLE</a>
+      <a class="btn btn-cool" href="#what">SEE HOW IT WORKS</a>
+    </div>
+
+    <div class="code-card" data-parallax="5">
+      <div class="code-bar">
+        <span class="led led-r"></span><span class="led led-y"></span><span class="led led-g"></span>
+        <span class="code-file">login.feature</span>
+      </div>
+<pre class="code"><code><span class="c-tag">@web @smoke</span>
+<span class="c-key">Scenario:</span> <span class="c-txt">Valid user can log in</span>
+  <span class="c-key">Given</span> User is on <span class="c-str">"{env:SAUCEDEMO}"</span>
+  <span class="c-key">When</span> User enters <span class="c-var">{env:SAUCE_USERNAME}</span> in the username field
+  <span class="c-key">And</span> User clicks the login button
+  <span class="c-key">Then</span> User should see <span class="c-str">"Products"</span></code></pre>
+      <div class="code-foot"><span class="prompt">$</span> noodle run --tags @smoke <span class="ok">&rarr; 1 passed</span></div>
+    </div>
+
+  </section>
+
+  <section class="strip" id="what">
+    <article class="card">
+      <h2>PLAIN ENGLISH IN</h2>
+      <p>Write the scenario the way you'd say it out loud. Noodle resolves the
+      selectors, the waits and the page objects for you.</p>
+    </article>
+    <article class="card">
+      <h2>DETERMINISTIC OUT</h2>
+      <p>The same feature file runs the same way every time &mdash; local, CI,
+      headed or headless. Generation is assisted; execution is not a guess.</p>
+    </article>
+    <article class="card">
+      <h2>AI + HUMAN NATIVE</h2>
+      <p>A tester and an agent write the exact same artefact. One language,
+      one runner, one report &mdash; no translation layer between them.</p>
+    </article>
+  </section>
+
+  <section class="woks" id="woks">
+    <p class="woks-label">WORK AREAS</p>
+    <ul class="wok-list">
+      <li>WEB</li><li>API</li><li>MOBILE</li><li>DESKTOP</li><li>PERFORMANCE</li>
+    </ul>
+    <p class="woks-note">Noodle is a universal test framework &mdash; no wok is a sub-mode of another.</p>
+  </section>
+
+  <section class="tenyks">
+    <p class="tenyks-mark" data-text="TENYKS">TENYKS</p>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <span>NOODLE TEST FRAMEWORK</span>
+  <span class="sep">&bull;</span>
+  <span>MADE FOR TESTERS &amp; THEIR AGENTS</span>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

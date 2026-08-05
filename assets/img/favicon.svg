@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" shape-rendering="crispEdges">
+  <rect width="32" height="32" fill="#0b0221"/>
+  <!-- steam -->
+  <rect x="12" y="4"  width="2" height="2" fill="#e6f7ff" opacity=".5"/>
+  <rect x="14" y="6"  width="2" height="2" fill="#e6f7ff" opacity=".7"/>
+  <rect x="12" y="8"  width="2" height="2" fill="#e6f7ff" opacity=".85"/>
+  <rect x="18" y="6"  width="2" height="2" fill="#e6f7ff" opacity=".5"/>
+  <rect x="20" y="8"  width="2" height="2" fill="#e6f7ff" opacity=".7"/>
+  <!-- broth -->
+  <rect x="4"  y="14" width="24" height="4" fill="#e0492c"/>
+  <rect x="8"  y="14" width="4"  height="4" fill="#f2b705"/>
+  <rect x="16" y="14" width="4"  height="4" fill="#fffaf0"/>
+  <rect x="22" y="14" width="3"  height="4" fill="#5c9e1e"/>
+  <!-- bowl -->
+  <rect x="4"  y="18" width="24" height="4" fill="#b8341f"/>
+  <rect x="6"  y="22" width="20" height="4" fill="#b8341f"/>
+  <rect x="9"  y="26" width="14" height="3" fill="#5c1810"/>
+  <rect x="4"  y="18" width="24" height="1" fill="#ff9f6b"/>
+  <rect x="4"  y="18" width="2"  height="4" fill="#ff2d95"/>
+  <rect x="26" y="18" width="2"  height="4" fill="#23e5ff"/>
+</svg>
