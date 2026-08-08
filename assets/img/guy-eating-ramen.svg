@@ -247,26 +247,31 @@
 <g filter="url(#neonRim)">
 
   <!-- torso: hoodie, behind the desk from y=276 down -->
+  <!-- black hoodie: the rim lights carry the silhouette, since the fill is
+       barely lighter than the scene behind it -->
   <g class="torso">
-    <rect x="276" y="204" width="132" height="12" fill="#6a17d6"/>
-    <rect x="264" y="216" width="156" height="60" fill="#6a17d6"/>
-    <rect x="264" y="216" width="24"  height="60" fill="#4a0fa0"/>
-    <rect x="396" y="216" width="24"  height="60" fill="#4a0fa0"/>
-    <rect x="318" y="204" width="48"  height="10" fill="#4a0fa0"/>
-    <rect x="330" y="214" width="4"   height="18" fill="#d8c2ff" opacity=".55"/>
-    <rect x="350" y="214" width="4"   height="18" fill="#d8c2ff" opacity=".55"/>
-    <rect x="264" y="216" width="4"   height="60" fill="#ff2d95" opacity=".6"/>
-    <rect x="416" y="216" width="4"   height="60" fill="#23e5ff" opacity=".5"/>
+    <rect x="276" y="204" width="132" height="12" fill="#1c1826"/>
+    <rect x="264" y="216" width="156" height="60" fill="#1c1826"/>
+    <rect x="264" y="216" width="24"  height="60" fill="#100d18"/>
+    <rect x="396" y="216" width="24"  height="60" fill="#100d18"/>
+    <rect x="276" y="204" width="132" height="4"  fill="#2b2438"/>
+    <rect x="318" y="204" width="48"  height="10" fill="#100d18"/>
+    <rect x="330" y="214" width="4"   height="18" fill="#e6d8ff" opacity=".65"/>
+    <rect x="350" y="214" width="4"   height="18" fill="#e6d8ff" opacity=".65"/>
+    <rect x="264" y="216" width="4"   height="60" fill="#ff2d95" opacity=".85"/>
+    <rect x="416" y="216" width="4"   height="60" fill="#23e5ff" opacity=".75"/>
   </g>
 
   <!-- left arm reaching down to the keyboard -->
-  <rect x="258" y="228" width="30" height="18" fill="#5a12c4"/>
-  <rect x="246" y="246" width="36" height="18" fill="#5a12c4"/>
+  <rect x="258" y="228" width="30" height="18" fill="#171320"/>
+  <rect x="246" y="246" width="36" height="18" fill="#171320"/>
+  <rect x="258" y="228" width="4"  height="18" fill="#ff2d95" opacity=".55"/>
+  <rect x="246" y="246" width="4"  height="18" fill="#ff2d95" opacity=".55"/>
 
   <!-- right forearm — static, so the hand can slide along it without a seam -->
-  <rect x="386" y="232" width="38" height="44" fill="#5a12c4"/>
-  <rect x="386" y="232" width="38" height="4"  fill="#6a17d6"/>
-  <rect x="420" y="232" width="4"  height="44" fill="#23e5ff" opacity=".45"/>
+  <rect x="386" y="232" width="38" height="44" fill="#171320"/>
+  <rect x="386" y="232" width="38" height="4"  fill="#2b2438"/>
+  <rect x="420" y="232" width="4"  height="44" fill="#23e5ff" opacity=".7"/>
 
   <g class="head">
     <!-- neck + ears -->
@@ -300,9 +305,12 @@
     <rect class="lid" x="309" y="147" width="24" height="18" fill="#f0b98d"/>
     <rect class="lid" x="351" y="147" width="24" height="18" fill="#f0b98d"/>
 
-    <!-- lens tint, then the glint sweeping across both -->
-    <rect x="306" y="144" width="30" height="24" fill="#23e5ff" opacity=".16"/>
-    <rect x="348" y="144" width="30" height="24" fill="#23e5ff" opacity=".16"/>
+    <!-- smoke lenses: neutral grey tint you can still read the eyes through,
+         with the glass catching a little more light along the top -->
+    <rect x="306" y="144" width="30" height="24" fill="#2b2533" opacity=".42"/>
+    <rect x="348" y="144" width="30" height="24" fill="#2b2533" opacity=".42"/>
+    <rect x="306" y="144" width="30" height="8"  fill="#e8e2f0" opacity=".12"/>
+    <rect x="348" y="144" width="30" height="8"  fill="#e8e2f0" opacity=".12"/>
     <g clip-path="url(#lensClip)">
       <rect class="glint" x="300" y="147" width="10" height="18" fill="#ffffff"/>
     </g>
