@@ -39,8 +39,9 @@
     <feDropShadow dx="0" dy="0" stdDeviation="7" flood-color="#7a1bff" flood-opacity=".45"/>
   </filter>
 
-  <filter id="cyanRim" x="-40%" y="-40%" width="180%" height="180%">
-    <feDropShadow dx="0" dy="0" stdDeviation="2.5" flood-color="#23e5ff" flood-opacity=".9"/>
+  <!-- smoke frames don't glow; they just need to sit on the face -->
+  <filter id="smokeRim" x="-40%" y="-40%" width="180%" height="180%">
+    <feDropShadow dx="0" dy="1" stdDeviation="1.4" flood-color="#150c22" flood-opacity=".85"/>
   </filter>
 
   <!-- the screen, so nothing painted on it leaks past the bezel -->
@@ -315,8 +316,9 @@
       <rect class="glint" x="300" y="147" width="10" height="18" fill="#ffffff"/>
     </g>
 
-    <!-- frames -->
-    <g fill="#23e5ff" filter="url(#cyanRim)">
+    <!-- smoke frames, with a lighter rail along the top so they read against
+         both the skin and the hair they cross -->
+    <g fill="#5a5366" filter="url(#smokeRim)">
       <rect x="306" y="144" width="30" height="3"/>
       <rect x="306" y="165" width="30" height="3"/>
       <rect x="306" y="144" width="3"  height="24"/>
@@ -328,6 +330,10 @@
       <rect x="336" y="150" width="12" height="3"/>
       <rect x="300" y="147" width="6"  height="3"/>
       <rect x="378" y="147" width="6"  height="3"/>
+    </g>
+    <g fill="#8a8299" opacity=".85">
+      <rect x="306" y="144" width="30" height="1"/>
+      <rect x="348" y="144" width="30" height="1"/>
     </g>
 
     <!-- mouth: shut, or open mid-slurp with a noodle end going in -->
