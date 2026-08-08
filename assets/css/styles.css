@@ -662,82 +662,77 @@ body.booting .footer { animation: boot-in .9s ease-out both; }
 .woks-note { margin: 0; font-size: .95rem; color: var(--paper-dim); }
 
 /* ==========================================================================
-   5b. TENYKS — outrun chrome wordmark
-   Three stacked copies of the same text: a heavy dark keyline behind, the
-   chrome gradient itself, and scanline bands masked over the lower half.
+   5b. Desk scene — the guy eating ramen at his terminal
+   The art is a self-animating SVG (see the CSS inside it); everything here is
+   just the stage it sits on — glow underneath, neon plinth, reflection.
    ========================================================================== */
 
-.tenyks {
+.desk {
   max-width: 1040px;
   margin: 0 auto;
-  padding: 56px clamp(18px, 5vw, 32px) 78px;
+  padding: 56px clamp(18px, 5vw, 32px) 64px;
   border-top: 1px solid rgba(35, 229, 255, .22);
   text-align: center;
 }
 
-.tenyks-mark {
+.desk-stage {
   position: relative;
-  display: inline-block;
-  margin: 0;
-  font-family: var(--ui);
-  font-weight: 700;
-  font-size: clamp(2.9rem, 12vw, 6.2rem);
-  line-height: 1.05;
-  letter-spacing: .16em;
-  text-indent: .16em;               /* balances the trailing letter-space */
-  text-transform: uppercase;
-  transform: skewX(-8deg);
-
-  /* the chrome: cool metal above the split, sunset below it */
-  background: linear-gradient(180deg,
-    #ffffff  0%,
-    #e4f8ff 16%,
-    #8fdfff 36%,
-    #45b8f7 47%,
-    #ffffff 49.5%,                  /* the chrome highlight line */
-    #ffffff 51%,
-    #ff2d95 53%,
-    #ff6b5c 72%,
-    #ffa23c 88%,
-    #ffe98a 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  filter:
-    drop-shadow(0 0 22px rgba(35, 229, 255, .65))
-    drop-shadow(0 0 60px rgba(255, 45, 149, .6));
+  width: min(560px, 92vw);
+  margin: 0 auto;
 }
 
-/* dark keyline behind, so the chrome reads against the scene */
-.tenyks-mark::before {
-  content: attr(data-text);
+/* warm pool of light under the desk, same idea as the bowl's halo */
+.desk-stage::before {
+  content: '';
   position: absolute;
-  left: 0;
-  top: 0;
-  z-index: -1;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  /* em-based so the keyline tracks the type instead of clogging it on mobile */
-  -webkit-text-stroke: .055em #0d0126;
-}
-
-/* scanline bands, lower half only */
-.tenyks-mark::after {
-  content: attr(data-text);
-  position: absolute;
-  left: 0;
-  top: 0;
-  background: repeating-linear-gradient(180deg,
-    transparent 0 .085em,
-    rgba(11, 1, 34, .34) .085em .115em);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  -webkit-mask-image: linear-gradient(180deg, transparent 54%, #000 62%);
-  mask-image: linear-gradient(180deg, transparent 54%, #000 62%);
+  left: 50%; top: 58%;
+  width: 118%; height: 92%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle,
+    rgba(35, 229, 255, .20) 0%,
+    rgba(122, 27, 255, .22) 42%,
+    transparent 70%);
+  filter: blur(16px);
+  animation: halo 4.4s ease-in-out infinite;
   pointer-events: none;
+}
+
+/* the neon line the desk stands on */
+.desk-stage::after {
+  content: '';
+  position: absolute;
+  left: 8%; right: 8%;
+  bottom: 6%;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent, var(--magenta), #fff, var(--cyan), transparent);
+  opacity: .55;
+  filter: blur(.5px);
+  pointer-events: none;
+}
+
+.desk-art {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+  filter:
+    drop-shadow(0 0 22px rgba(35, 229, 255, .35))
+    drop-shadow(0 0 54px rgba(122, 27, 255, .45))
+    drop-shadow(0 14px 24px rgba(0, 0, 0, .6));
+}
+
+.desk-caption {
+  margin: 22px 0 0;
+  font-family: var(--pixel);
+  font-size: clamp(8px, 1.6vw, 10px);
+  letter-spacing: .2em;
+  color: var(--cyan);
+  text-shadow:
+    0 0 14px rgba(35, 229, 255, .85),
+    0 2px 10px rgba(3, 0, 12, .95),
+    0 0 26px rgba(3, 0, 12, .85);
 }
 
 /* ==========================================================================
@@ -771,7 +766,7 @@ body.booting .footer { animation: boot-in .9s ease-out both; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .floor-grid, .haze, .logo, .logo-halo, .brand-dot,
+  .floor-grid, .haze, .logo, .logo-halo, .brand-dot, .desk-stage::before,
   body.booting main, body.booting .topbar, body.booting .footer {
     animation: none !important;
   }

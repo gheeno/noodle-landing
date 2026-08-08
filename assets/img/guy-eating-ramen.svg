@@ -1,0 +1,511 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" width="480" shape-rendering="crispEdges" role="img" aria-label="Pixel art: a developer in glasses eating ramen at his desk while a passing test run glows on the monitor">
+<title>Noodle — a developer eating ramen while the suite goes green</title>
+
+<!-- Same 12px pixel grid and the same palette as noodle-bowl-hot.svg, so the
+     bowl on this desk is the bowl in the logo. Everything animates from the
+     CSS below, so this renders as a plain <img> with no JavaScript. -->
+
+<defs>
+  <linearGradient id="deskFade" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"  stop-color="#3a1258" stop-opacity=".96"/>
+    <stop offset="55%" stop-color="#22093c" stop-opacity=".72"/>
+    <stop offset="100%" stop-color="#12042a" stop-opacity="0"/>
+  </linearGradient>
+
+  <radialGradient id="spill" cx="50%" cy="50%" r="50%">
+    <stop offset="0%"   stop-color="#23e5ff" stop-opacity=".38"/>
+    <stop offset="55%"  stop-color="#7a1bff" stop-opacity=".16"/>
+    <stop offset="100%" stop-color="#7a1bff" stop-opacity="0"/>
+  </radialGradient>
+
+  <radialGradient id="heatGlow" cx="50%" cy="50%" r="50%">
+    <stop offset="0%"   stop-color="#ffb03a" stop-opacity=".45"/>
+    <stop offset="50%"  stop-color="#ff6a2d" stop-opacity=".22"/>
+    <stop offset="100%" stop-color="#ff2d95" stop-opacity="0"/>
+  </radialGradient>
+
+  <linearGradient id="scrHorizon" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#ff2d95" stop-opacity=".45"/>
+    <stop offset="100%" stop-color="#7a1bff" stop-opacity="0"/>
+  </linearGradient>
+
+  <filter id="steamSoften" x="-80%" y="-40%" width="260%" height="200%">
+    <feGaussianBlur stdDeviation=".8"/>
+    <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#cbf2ff" flood-opacity=".75"/>
+  </filter>
+
+  <filter id="neonRim" x="-30%" y="-30%" width="160%" height="160%">
+    <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#ff2d95" flood-opacity=".8"/>
+    <feDropShadow dx="0" dy="0" stdDeviation="7" flood-color="#7a1bff" flood-opacity=".45"/>
+  </filter>
+
+  <filter id="cyanRim" x="-40%" y="-40%" width="180%" height="180%">
+    <feDropShadow dx="0" dy="0" stdDeviation="2.5" flood-color="#23e5ff" flood-opacity=".9"/>
+  </filter>
+
+  <!-- the screen, so nothing painted on it leaks past the bezel -->
+  <clipPath id="screenClip">
+    <rect x="48" y="156" width="108" height="84"/>
+  </clipPath>
+
+  <!-- inside of the two lenses, for the glint sweep -->
+  <clipPath id="lensClip">
+    <rect x="309" y="147" width="24" height="18"/>
+    <rect x="351" y="147" width="24" height="18"/>
+  </clipPath>
+
+  <style>
+    /* --- the eat cycle: 3.6s, everything below is a slice of it ----------- */
+
+    /* chopsticks dip into the bowl, rise to the mouth, hold, dip again */
+    @keyframes eat-lift {
+      0%, 10%  { transform: translateY(26px); }
+      34%, 78% { transform: translateY(0); }
+      100%     { transform: translateY(26px); }
+    }
+
+    /* he grabs a bite on the way down, and it is gone after the slurp */
+    @keyframes bite-hold {
+      0%, 6%    { opacity: 0; }
+      10%, 56%  { opacity: 1; }
+      60%, 100% { opacity: 0; }
+    }
+
+    /* the strand pays out on the way up, then vanishes on the slurp */
+    @keyframes strand-slurp {
+      0%, 6%    { transform: scaleY(.18); opacity: 0; }
+      10%       { transform: scaleY(.26); opacity: 1; }
+      34%       { transform: scaleY(1);   opacity: 1; }
+      50%       { transform: scaleY(.95); opacity: 1; }
+      56%       { transform: scaleY(.06); opacity: 1; }
+      60%, 100% { transform: scaleY(.06); opacity: 0; }
+    }
+
+    /* one slurp, then two chews */
+    @keyframes mouth-open {
+      0%, 46%   { opacity: 0; }
+      48%, 62%  { opacity: 1; }
+      64%       { opacity: 0; }
+      68%       { opacity: 1; }
+      72%       { opacity: 0; }
+      76%       { opacity: 1; }
+      80%, 100% { opacity: 0; }
+    }
+    @keyframes mouth-shut {
+      0%, 46%   { opacity: 1; }
+      48%, 62%  { opacity: 0; }
+      64%       { opacity: 1; }
+      68%       { opacity: 0; }
+      72%       { opacity: 1; }
+      76%       { opacity: 0; }
+      80%, 100% { opacity: 1; }
+    }
+
+    /* he leans into it */
+    @keyframes head-lean {
+      0%, 14%   { transform: translateY(0); }
+      48%, 68%  { transform: translateY(3px); }
+      86%, 100% { transform: translateY(0); }
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scaleY(1); }
+      50%      { transform: scaleY(1.014); }
+    }
+
+    /* --- steam ------------------------------------------------------------ */
+    @keyframes steam-rise {
+      0%   { transform: translateY(24px) scaleX(.8);  opacity: 0; }
+      12%  { opacity: 1; }
+      65%  { opacity: .8; }
+      100% { transform: translateY(-34px) scaleX(1.3); opacity: 0; }
+    }
+
+    @keyframes heat-breathe {
+      0%, 100% { opacity: .4;  transform: scaleY(.9)  scaleX(.97); }
+      50%      { opacity: .95; transform: scaleY(1.1) scaleX(1.03); }
+    }
+
+    /* --- the monitor ------------------------------------------------------ */
+    @keyframes scr-scan  { from { transform: translateY(-12px); } to { transform: translateY(84px); } }
+    @keyframes scr-flick { 0%, 100% { opacity: 1; } 47% { opacity: .93; } 52% { opacity: 1; } 96% { opacity: .88; } }
+    @keyframes blink-hard { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    @keyframes led-pulse  { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
+
+    /* --- glasses ---------------------------------------------------------- */
+    @keyframes glint {
+      0%, 62%   { transform: translateX(0);    opacity: 0; }
+      66%       { transform: translateX(14px); opacity: .85; }
+      86%       { transform: translateX(86px); opacity: .85; }
+      90%, 100% { transform: translateX(86px); opacity: 0; }
+    }
+    @keyframes eye-blink { 0%, 95%, 100% { opacity: 0; } 97% { opacity: 1; } }
+
+    /* --- bindings --------------------------------------------------------- */
+    .eat    { animation: eat-lift 3.6s ease-in-out infinite; }
+    .bite   { animation: bite-hold 3.6s steps(1, end) infinite; }
+    .strand {
+      transform-box: fill-box;
+      transform-origin: 50% 0%;
+      animation: strand-slurp 3.6s ease-in-out infinite;
+    }
+    .m-open { animation: mouth-open 3.6s steps(1, end) infinite; opacity: 0; }
+    .m-shut { animation: mouth-shut 3.6s steps(1, end) infinite; }
+    .head   { animation: head-lean 3.6s ease-in-out infinite; }
+    .torso  {
+      transform-box: fill-box;
+      transform-origin: 50% 100%;
+      animation: breathe 4.4s ease-in-out infinite;
+    }
+
+    .wisp {
+      transform-box: fill-box;
+      transform-origin: 50% 100%;
+      animation: steam-rise 4.6s ease-out infinite;
+    }
+    .w2 { animation-duration: 5.7s; animation-delay: -2.1s; }
+    .w3 { animation-duration: 4.1s; animation-delay: -3.4s; }
+
+    .heat   { transform-box: fill-box; transform-origin: 50% 100%;
+              animation: heat-breathe 2.8s ease-in-out infinite; }
+
+    .scan   { animation: scr-scan 2.8s linear infinite; }
+    .screen { animation: scr-flick 5.5s ease-in-out infinite; }
+    .cursor { animation: blink-hard 1.1s steps(1, end) infinite; }
+    .led    { animation: led-pulse 2.2s ease-in-out infinite; }
+
+    .glint  { animation: glint 5.4s ease-in-out infinite; opacity: 0; }
+    .lid    { animation: eye-blink 6.2s steps(1, end) infinite; opacity: 0; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .eat, .bite, .strand, .m-open, .m-shut, .head, .torso, .wisp, .heat,
+      .scan, .screen, .cursor, .led, .glint, .lid { animation: none; }
+      .m-open { opacity: 0; }
+      .m-shut { opacity: 1; }
+      .bite   { opacity: 1; }
+      .wisp   { opacity: .55; }
+      .scan   { opacity: 0; }
+    }
+  </style>
+</defs>
+
+<!-- ===== glow the screen throws into the room ===== -->
+<ellipse cx="102" cy="200" rx="150" ry="118" fill="url(#spill)" shape-rendering="auto"/>
+
+<!-- ==========================================================================
+     Monitor — a fat CRT with the suite going green on it
+     ========================================================================== -->
+<g>
+  <!-- case -->
+  <rect x="36" y="144" width="132" height="108" fill="#2a1140"/>
+  <rect x="36" y="144" width="132" height="6"   fill="#4a2170"/>
+  <rect x="42" y="150" width="120" height="96"  fill="#180a2b"/>
+
+  <!-- screen -->
+  <rect x="48" y="156" width="108" height="84" fill="#0b0221"/>
+
+  <g clip-path="url(#screenClip)">
+    <g class="screen">
+      <!-- a little synthwave on the desktop wallpaper -->
+      <rect x="48" y="210" width="108" height="30" fill="url(#scrHorizon)" shape-rendering="auto"/>
+      <rect x="48" y="214" width="108" height="2"  fill="#ff2d95" opacity=".8"/>
+      <rect x="60"  y="216" width="2" height="24" fill="#23e5ff" opacity=".3"/>
+      <rect x="78"  y="216" width="2" height="24" fill="#23e5ff" opacity=".3"/>
+      <rect x="96"  y="216" width="2" height="24" fill="#23e5ff" opacity=".3"/>
+      <rect x="114" y="216" width="2" height="24" fill="#23e5ff" opacity=".3"/>
+      <rect x="132" y="216" width="2" height="24" fill="#23e5ff" opacity=".3"/>
+
+      <!-- the run: a tag line, a scenario, a step, then green -->
+      <rect x="56" y="162" width="34" height="6" fill="#ffb03a"/>
+      <rect x="56" y="172" width="58" height="6" fill="#ff2d95"/>
+      <rect x="56" y="182" width="44" height="6" fill="#c9a8d8"/>
+      <rect x="56" y="192" width="52" height="6" fill="#46f08a"/>
+      <rect x="112" y="192" width="7" height="6" fill="#46f08a" class="cursor"/>
+
+      <!-- CRT scanline sweeping down -->
+      <rect class="scan" x="48" y="156" width="108" height="12"
+            fill="#ffffff" opacity=".07" shape-rendering="auto"/>
+    </g>
+  </g>
+
+  <!-- bezel furniture -->
+  <rect x="148" y="243" width="7" height="4" fill="#46f08a" class="led"/>
+
+  <!-- neon rim: magenta key from the left, cyan fill from the right -->
+  <rect x="36"  y="144" width="4" height="108" fill="#ff2d95" opacity=".6"/>
+  <rect x="164" y="144" width="4" height="108" fill="#23e5ff" opacity=".5"/>
+
+  <!-- neck + base, sitting on the desk line at y=276 -->
+  <rect x="90" y="252" width="24" height="12" fill="#241038"/>
+  <rect x="66" y="264" width="72" height="12" fill="#2a1140"/>
+  <rect x="66" y="264" width="72" height="3"  fill="#4a2170"/>
+</g>
+
+<!-- ==========================================================================
+     The guy
+     ========================================================================== -->
+<g filter="url(#neonRim)">
+
+  <!-- torso: hoodie, behind the desk from y=276 down -->
+  <g class="torso">
+    <rect x="276" y="204" width="132" height="12" fill="#6a17d6"/>
+    <rect x="264" y="216" width="156" height="60" fill="#6a17d6"/>
+    <rect x="264" y="216" width="24"  height="60" fill="#4a0fa0"/>
+    <rect x="396" y="216" width="24"  height="60" fill="#4a0fa0"/>
+    <rect x="318" y="204" width="48"  height="10" fill="#4a0fa0"/>
+    <rect x="330" y="214" width="4"   height="18" fill="#d8c2ff" opacity=".55"/>
+    <rect x="350" y="214" width="4"   height="18" fill="#d8c2ff" opacity=".55"/>
+    <rect x="264" y="216" width="4"   height="60" fill="#ff2d95" opacity=".6"/>
+    <rect x="416" y="216" width="4"   height="60" fill="#23e5ff" opacity=".5"/>
+  </g>
+
+  <!-- left arm reaching down to the keyboard -->
+  <rect x="258" y="228" width="30" height="18" fill="#5a12c4"/>
+  <rect x="246" y="246" width="36" height="18" fill="#5a12c4"/>
+
+  <!-- right forearm — static, so the hand can slide along it without a seam -->
+  <rect x="386" y="232" width="38" height="44" fill="#5a12c4"/>
+  <rect x="386" y="232" width="38" height="4"  fill="#6a17d6"/>
+  <rect x="420" y="232" width="4"  height="44" fill="#23e5ff" opacity=".45"/>
+
+  <g class="head">
+    <!-- neck + ears -->
+    <rect x="330" y="192" width="24" height="12" fill="#cf8f61"/>
+    <rect x="294" y="150" width="6"  height="12" fill="#f0b98d"/>
+    <rect x="384" y="150" width="6"  height="12" fill="#f0b98d"/>
+
+    <!-- face -->
+    <rect x="300" y="132" width="84" height="60" fill="#f0b98d"/>
+    <rect x="300" y="186" width="84" height="6"  fill="#cf8f61"/>
+    <rect x="336" y="168" width="12" height="8"  fill="#cf8f61"/>
+
+    <!-- hair -->
+    <rect x="312" y="108" width="60" height="12" fill="#2b1240"/>
+    <rect x="300" y="120" width="84" height="12" fill="#2b1240"/>
+    <rect x="300" y="132" width="30" height="6"  fill="#2b1240"/>
+    <rect x="354" y="132" width="30" height="6"  fill="#2b1240"/>
+    <rect x="300" y="132" width="6"  height="30" fill="#2b1240"/>
+    <rect x="378" y="132" width="6"  height="30" fill="#2b1240"/>
+    <rect x="318" y="108" width="42" height="5"  fill="#4a2170"/>
+    <rect x="312" y="108" width="6"  height="24" fill="#ff2d95" opacity=".45"/>
+    <rect x="366" y="108" width="6"  height="18" fill="#23e5ff" opacity=".35"/>
+
+    <!-- eyes, behind the lenses -->
+    <rect x="310" y="150" width="22" height="13" fill="#f7e9ff" opacity=".55"/>
+    <rect x="352" y="150" width="22" height="13" fill="#f7e9ff" opacity=".55"/>
+    <rect x="316" y="153" width="8"  height="8"  fill="#1a0a2e"/>
+    <rect x="358" y="153" width="8"  height="8"  fill="#1a0a2e"/>
+    <rect x="318" y="154" width="3"  height="3"  fill="#cbf2ff"/>
+    <rect x="360" y="154" width="3"  height="3"  fill="#cbf2ff"/>
+    <rect class="lid" x="309" y="147" width="24" height="18" fill="#f0b98d"/>
+    <rect class="lid" x="351" y="147" width="24" height="18" fill="#f0b98d"/>
+
+    <!-- lens tint, then the glint sweeping across both -->
+    <rect x="306" y="144" width="30" height="24" fill="#23e5ff" opacity=".16"/>
+    <rect x="348" y="144" width="30" height="24" fill="#23e5ff" opacity=".16"/>
+    <g clip-path="url(#lensClip)">
+      <rect class="glint" x="300" y="147" width="10" height="18" fill="#ffffff"/>
+    </g>
+
+    <!-- frames -->
+    <g fill="#23e5ff" filter="url(#cyanRim)">
+      <rect x="306" y="144" width="30" height="3"/>
+      <rect x="306" y="165" width="30" height="3"/>
+      <rect x="306" y="144" width="3"  height="24"/>
+      <rect x="333" y="144" width="3"  height="24"/>
+      <rect x="348" y="144" width="30" height="3"/>
+      <rect x="348" y="165" width="30" height="3"/>
+      <rect x="348" y="144" width="3"  height="24"/>
+      <rect x="375" y="144" width="3"  height="24"/>
+      <rect x="336" y="150" width="12" height="3"/>
+      <rect x="300" y="147" width="6"  height="3"/>
+      <rect x="378" y="147" width="6"  height="3"/>
+    </g>
+
+    <!-- mouth: shut, or open mid-slurp with a noodle end going in -->
+    <rect class="m-shut" x="330" y="176" width="24" height="5" fill="#6b2333"/>
+    <g class="m-open">
+      <rect x="328" y="172" width="28" height="14" fill="#4a1020"/>
+      <rect x="332" y="180" width="20" height="5"  fill="#b8465e"/>
+      <rect x="340" y="170" width="6"  height="6"  fill="#fdeec2"/>
+    </g>
+  </g>
+</g>
+
+<!-- screen light landing on the near side of his face -->
+<rect x="294" y="120" width="48" height="72" fill="#23e5ff" opacity=".10"
+      shape-rendering="auto" style="mix-blend-mode: screen"/>
+
+<!-- ==========================================================================
+     Desk — drawn over him, so he sits behind it. Fades out at the bottom so
+     the page's own scene shows through instead of a hard floor line.
+     ========================================================================== -->
+<rect x="0" y="276" width="480" height="72" fill="url(#deskFade)" shape-rendering="auto"/>
+<rect x="0" y="276" width="480" height="4" fill="#ff9f6b" opacity=".45"/>
+<rect x="0" y="280" width="480" height="2" fill="#ff2d95" opacity=".5"/>
+
+<!-- ===== keyboard, and the hand resting on it ===== -->
+<g>
+  <rect x="180" y="264" width="96" height="12" fill="#241038"/>
+  <rect x="180" y="264" width="96" height="4"  fill="#3a1a5c"/>
+  <g fill="#6a4a9c" opacity=".85">
+    <rect x="184" y="269" width="5" height="4"/>
+    <rect x="192" y="269" width="5" height="4"/>
+    <rect x="200" y="269" width="5" height="4"/>
+    <rect x="208" y="269" width="5" height="4"/>
+    <rect x="216" y="269" width="5" height="4"/>
+    <rect x="224" y="269" width="5" height="4"/>
+    <rect x="232" y="269" width="5" height="4"/>
+    <rect x="240" y="269" width="5" height="4"/>
+    <rect x="248" y="269" width="5" height="4"/>
+    <rect x="256" y="269" width="5" height="4"/>
+    <rect x="264" y="269" width="5" height="4"/>
+  </g>
+  <rect x="180" y="274" width="96" height="2" fill="#23e5ff" opacity=".8"/>
+
+  <!-- his other hand, still on the keys -->
+  <rect x="238" y="252" width="40" height="24" fill="#f0b98d"/>
+  <rect x="238" y="252" width="40" height="5"  fill="#ffd6ae"/>
+  <rect x="244" y="264" width="3"  height="12" fill="#cf8f61"/>
+  <rect x="253" y="264" width="3"  height="12" fill="#cf8f61"/>
+  <rect x="262" y="264" width="3"  height="12" fill="#cf8f61"/>
+  <rect x="271" y="264" width="3"  height="12" fill="#cf8f61"/>
+  <rect x="238" y="256" width="7"  height="16" fill="#cf8f61"/>
+</g>
+
+<!-- ==========================================================================
+     The bowl — same palette as the logo, scaled to sit on a desk
+     ========================================================================== -->
+<g filter="url(#neonRim)">
+  <!-- broth -->
+  <rect x="294" y="228" width="12"  height="12" fill="#5c1810"/>
+  <rect x="306" y="228" width="84"  height="12" fill="#e0492c"/>
+  <rect x="390" y="228" width="12"  height="12" fill="#5c1810"/>
+  <rect x="306" y="228" width="84"  height="6"  fill="#7a2415"/>
+
+  <!-- noodles + toppings -->
+  <rect x="300" y="240" width="12" height="12" fill="#8a4a08"/>
+  <rect x="312" y="240" width="12" height="12" fill="#5c9e1e"/>
+  <rect x="324" y="240" width="12" height="12" fill="#fdeec2"/>
+  <rect x="336" y="240" width="12" height="12" fill="#c2790a"/>
+  <rect x="348" y="240" width="12" height="12" fill="#fffaf0"/>
+  <rect x="360" y="240" width="12" height="12" fill="#e3a878"/>
+  <rect x="372" y="240" width="12" height="12" fill="#c2790a"/>
+  <rect x="384" y="240" width="12" height="12" fill="#8a4a08"/>
+  <rect x="360" y="240" width="12" height="8"  fill="#3a2412"/>
+
+  <!-- body -->
+  <rect x="294" y="252" width="12"  height="12" fill="#5c1810"/>
+  <rect x="306" y="252" width="84"  height="12" fill="#b8341f"/>
+  <rect x="390" y="252" width="12"  height="12" fill="#5c1810"/>
+  <rect x="306" y="264" width="12"  height="12" fill="#5c1810"/>
+  <rect x="318" y="264" width="60"  height="12" fill="#b8341f"/>
+  <rect x="378" y="264" width="12"  height="12" fill="#5c1810"/>
+
+  <!-- lip catching the heat, then the neon rim -->
+  <rect x="294" y="252" width="108" height="3"  fill="#ff9f6b" opacity=".55"/>
+  <rect x="294" y="252" width="4"   height="12" fill="#ff2d95" opacity=".7"/>
+  <rect x="306" y="264" width="4"   height="12" fill="#ff2d95" opacity=".7"/>
+  <rect x="398" y="252" width="4"   height="12" fill="#23e5ff" opacity=".55"/>
+  <rect x="386" y="264" width="4"   height="12" fill="#23e5ff" opacity=".55"/>
+</g>
+
+<!-- heat shimmer over the broth -->
+<ellipse class="heat" cx="348" cy="232" rx="58" ry="13" fill="url(#heatGlow)"
+         shape-rendering="auto" style="mix-blend-mode: screen"/>
+
+<!-- ==========================================================================
+     Chopsticks, hand and the noodle he is lifting — the whole group rides the
+     eat cycle, so the sticks dip into the bowl and come back up to his mouth.
+     ========================================================================== -->
+<g class="eat">
+  <!-- chopsticks: 12px stair, same slope as the logo's pair, mirrored -->
+  <g fill="#c9975b">
+    <rect x="354" y="176" width="12" height="12"/>
+    <rect x="378" y="176" width="12" height="12"/>
+    <rect x="354" y="188" width="12" height="12"/>
+    <rect x="378" y="188" width="12" height="12"/>
+    <rect x="366" y="200" width="12" height="12"/>
+    <rect x="390" y="200" width="12" height="12"/>
+  </g>
+  <rect x="354" y="176" width="3" height="24" fill="#ff2d95" opacity=".55"/>
+  <rect x="387" y="176" width="3" height="24" fill="#23e5ff" opacity=".45"/>
+
+  <!-- the bite he is carrying up, and the strand still paying out of the bowl -->
+  <g class="bite">
+    <rect x="354" y="160" width="30" height="16" fill="#fdeec2"/>
+    <rect x="354" y="160" width="8"  height="8"  fill="#fffaf0"/>
+    <rect x="376" y="160" width="8"  height="7"  fill="#e8c97a"/>
+    <rect x="366" y="168" width="18" height="8"  fill="#e8c97a"/>
+
+    <!-- keylined, or it vanishes against his face on the way past it -->
+    <g class="strand">
+      <rect x="346" y="176" width="11" height="20" fill="#3a2412" opacity=".8"/>
+      <rect x="340" y="196" width="11" height="16" fill="#3a2412" opacity=".8"/>
+      <rect x="346" y="212" width="11" height="18" fill="#3a2412" opacity=".8"/>
+      <rect x="348" y="176" width="7"  height="20" fill="#fffaf0"/>
+      <rect x="342" y="196" width="7"  height="16" fill="#fdeec2"/>
+      <rect x="348" y="212" width="7"  height="18" fill="#e8c97a"/>
+    </g>
+  </g>
+
+  <!-- wrist, then the fist wrapped round the sticks -->
+  <rect x="382" y="230" width="30" height="20" fill="#f0b98d"/>
+  <rect x="382" y="230" width="30" height="4"  fill="#ffd6ae"/>
+
+  <rect x="364" y="212" width="42" height="32" fill="#f0b98d"/>
+  <rect x="364" y="212" width="42" height="5"  fill="#ffd6ae"/>
+  <rect x="400" y="212" width="6"  height="32" fill="#cf8f61"/>
+  <rect x="370" y="221" width="30" height="3"  fill="#cf8f61"/>
+  <rect x="370" y="230" width="30" height="3"  fill="#cf8f61"/>
+  <rect x="370" y="239" width="30" height="3"  fill="#cf8f61"/>
+  <rect x="364" y="215" width="15" height="15" fill="#ffd6ae"/>
+  <rect x="364" y="228" width="15" height="3"  fill="#cf8f61"/>
+  <rect x="402" y="212" width="4"  height="32" fill="#23e5ff" opacity=".45"/>
+</g>
+
+<!-- ==========================================================================
+     Steam — behind nothing, so it drifts across the whole scene
+     ========================================================================== -->
+<g shape-rendering="auto" filter="url(#steamSoften)" fill="#eafcff" opacity=".82">
+  <g transform="translate(294,228)">
+    <g class="wisp">
+      <rect x="0"   y="-12" width="12" height="12" opacity=".9"/>
+      <rect x="12"  y="-12" width="12" height="12" opacity=".6"/>
+      <rect x="0"   y="-24" width="12" height="12" opacity=".8"/>
+      <rect x="-12" y="-36" width="12" height="12" opacity=".5"/>
+      <rect x="0"   y="-36" width="12" height="12" opacity=".7"/>
+      <rect x="-12" y="-48" width="12" height="12" opacity=".55"/>
+      <rect x="0"   y="-60" width="12" height="12" opacity=".42"/>
+      <rect x="-12" y="-60" width="12" height="12" opacity=".3"/>
+      <rect x="0"   y="-72" width="12" height="12" opacity=".2"/>
+      <rect x="12"  y="-84" width="12" height="12" opacity=".12"/>
+    </g>
+  </g>
+  <g transform="translate(342,228)" opacity=".62">
+    <g class="wisp w2">
+      <rect x="0"   y="-12" width="12" height="12" opacity=".85"/>
+      <rect x="-12" y="-12" width="12" height="12" opacity=".55"/>
+      <rect x="0"   y="-24" width="12" height="12" opacity=".75"/>
+      <rect x="12"  y="-36" width="12" height="12" opacity=".48"/>
+      <rect x="0"   y="-36" width="12" height="12" opacity=".65"/>
+      <rect x="12"  y="-48" width="12" height="12" opacity=".5"/>
+      <rect x="12"  y="-60" width="12" height="12" opacity=".34"/>
+      <rect x="0"   y="-72" width="12" height="12" opacity=".2"/>
+    </g>
+  </g>
+  <g transform="translate(390,228)">
+    <g class="wisp w3">
+      <rect x="0"   y="-12" width="12" height="12" opacity=".85"/>
+      <rect x="12"  y="-12" width="12" height="12" opacity=".5"/>
+      <rect x="0"   y="-24" width="12" height="12" opacity=".75"/>
+      <rect x="12"  y="-36" width="12" height="12" opacity=".6"/>
+      <rect x="0"   y="-48" width="12" height="12" opacity=".45"/>
+      <rect x="12"  y="-48" width="12" height="12" opacity=".3"/>
+      <rect x="12"  y="-60" width="12" height="12" opacity=".24"/>
+      <rect x="12"  y="-72" width="12" height="12" opacity=".14"/>
+    </g>
+  </g>
+</g>
+
+</svg>

@@ -21,6 +21,8 @@ index.html                        the whole page
 assets/css/styles.css             scene, CRT overlay, layout, type
 assets/js/main.js                 CRT power-on + pointer parallax (no deps)
 assets/img/noodle-bowl-hot.svg    the logo — pixel art, self-animating
+assets/img/guy-eating-ramen.svg   the desk scene — pixel art, self-animating
+assets/img/og-cover.png           1200×630 social card
 assets/img/favicon.svg
 assets/fonts/                     self-hosted woff2 (SIL OFL), latin subset
 ```
@@ -41,8 +43,16 @@ self-hosted fonts under that scheme.
 
 ## Deploying to GitHub Pages
 
-Settings → Pages → *Deploy from a branch* → pick the branch, folder `/ (root)`.
-`.nojekyll` is committed so the `assets/` tree is served verbatim.
+Live at **<https://gheeno.github.io/noodle-landing/>**.
+
+Pages is set to *Deploy from a branch* → `main`, folder `/ (root)`, so every push
+to `main` republishes. `.nojekyll` is committed so the `assets/` tree is served
+verbatim — without it Jekyll would swallow the fonts.
+
+The social card is a static render of the hero, not a live screenshot: rebuild it
+by pointing a headless browser at a 1200×630 page and re-exporting
+`assets/img/og-cover.png`. The absolute URLs in the `og:` tags are tied to the
+Pages domain, so they need updating if the site moves.
 
 ---
 
@@ -78,22 +88,34 @@ blurred, so the pixel art stays hard-edged against a soft background.
 `prefers-reduced-motion: reduce` disables the grid scroll, the haze drift, the
 float, the halo pulse and the power-on wipe.
 
-## TENYKS
+## The desk scene
 
-The footer closes on a **TENYKS** wordmark in outrun chrome. No image — it's
-live text, three stacked copies of the same string:
+The page closes on `assets/img/guy-eating-ramen.svg` — a developer in glasses
+eating a bowl of ramen while his suite goes green behind him. Same 12&nbsp;px
+grid and same palette as the logo, so the bowl on the desk *is* the bowl in the
+mark, just sized for a desk.
 
-- a heavy dark keyline behind it (`::before`, `-webkit-text-stroke`), so the
-  chrome holds against the scene
-- the chrome itself: a `background-clip: text` gradient running cool metal down
-  to a bright highlight line at the midpoint, then magenta → orange → gold
-- scanline bands over the lower half only (`::after`, masked from 54%)
+It runs on one 3.6s loop that every moving part reads a slice of:
 
-Stroke width and band spacing are in `em`, so they track the font size instead
-of clogging the letterforms at mobile sizes. The whole thing is skewed `-8deg`
-for the italic speed.
+- **the eat cycle** — the chopsticks dip into the bowl, rise to his mouth, hold,
+  and dip again. The clump of noodles only exists between the grab and the
+  slurp, so he isn't holding food on the way down.
+- **the strand** — pays out of the bowl as the sticks rise, then vanishes on the
+  slurp. It's keylined in dark brown, or it disappears against his face on the
+  way past it.
+- **the mouth** — one slurp then two chews, swapped with `steps(1)` between a
+  shut mouth and an open one, rather than tweened.
+- **the head** leans in for the slurp and back out after it.
 
-No logos are carried in this repo.
+Everything else runs free of that loop: steam wisps on 4.1s–5.7s, heat shimmer
+over the broth, a scanline crawling down the CRT, a blinking cursor on the last
+green line, a glint sweeping across both lenses, and a blink about every six
+seconds.
+
+The whole thing is CSS inside the SVG, so it animates as a plain `<img>` with no
+JavaScript, exactly like the logo. `prefers-reduced-motion: reduce` freezes it
+with the mouth shut and the steam held at low opacity. The desk fades out at the
+bottom instead of ending on a floor line, so the page's own scene shows through.
 
 ## Licence
 
