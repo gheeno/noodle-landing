@@ -659,6 +659,43 @@ body.booting .footer { animation: boot-in .9s ease-out both; }
   box-shadow: 0 0 14px rgba(35, 229, 255, .2);
 }
 
+/* Woks that aren't fully cooked yet: the chip cools down to amber and carries a
+   strip of hazard tape. Tape colours are local vars so the stripes, the border
+   glow and the text outline can never drift apart. */
+
+.wok-list li.wok-soon {
+  color: var(--paper-dim);
+  border-color: rgba(255, 176, 58, .5);
+  background: rgba(255, 176, 58, .07);
+  box-shadow: 0 0 14px rgba(255, 176, 58, .18);
+}
+
+.tape {
+  --tape-amber: #ffc247;
+  --tape-dark:  #171009;
+
+  display: inline-block;
+  margin-left: 9px;
+  padding: 4px 7px 3px;
+  vertical-align: baseline;
+  font-size: 7px;
+  line-height: 1;
+  letter-spacing: .14em;
+  color: var(--tape-dark);
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--tape-amber) 0 8px,
+    var(--tape-dark) 8px 15px);
+  border: 1px solid rgba(255, 194, 71, .85);
+  box-shadow: 0 0 12px rgba(255, 176, 58, .38);
+  transform: rotate(-2deg);
+  /* An amber knockout so the black letters stay readable where a dark stripe
+     runs underneath them. */
+  text-shadow:
+     1px 0 0 var(--tape-amber), -1px 0 0 var(--tape-amber),
+     0 1px 0 var(--tape-amber),  0 -1px 0 var(--tape-amber);
+}
+
 .woks-note { margin: 0; font-size: .95rem; color: var(--paper-dim); }
 
 /* ==========================================================================
