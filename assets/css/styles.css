@@ -627,6 +627,10 @@ body.booting .footer { animation: boot-in .9s ease-out both; }
 }
 
 .woks-label {
+  display: inline-block;
+  padding: 7px 14px 6px;
+  background: rgba(8, 2, 24, .7);
+  backdrop-filter: blur(5px);
   margin: 0 0 18px;
   font-family: var(--pixel);
   font-size: 10px;
@@ -655,48 +659,43 @@ body.booting .footer { animation: boot-in .9s ease-out both; }
   letter-spacing: .08em;
   color: var(--paper);
   border: 1px solid rgba(35, 229, 255, .55);
-  background: rgba(35, 229, 255, .07);
+  background: rgba(8, 2, 24, .62);
   box-shadow: 0 0 14px rgba(35, 229, 255, .2);
+  backdrop-filter: blur(5px);
 }
 
-/* Woks that aren't fully cooked yet: the chip cools down to amber and carries a
-   strip of hazard tape. Tape colours are local vars so the stripes, the border
-   glow and the text outline can never drift apart. */
+/* Every wok ships. Two of them carry a caveat about how far they've been
+   verified in the wild, so the chip states it rather than hiding the wok. */
 
-.wok-list li.wok-soon {
-  color: var(--paper-dim);
-  border-color: rgba(255, 176, 58, .5);
-  background: rgba(255, 176, 58, .07);
-  box-shadow: 0 0 14px rgba(255, 176, 58, .18);
-}
-
-.tape {
-  --tape-amber: #ffc247;
-  --tape-dark:  #171009;
-
+.wok-note {
   display: inline-block;
   margin-left: 9px;
-  padding: 4px 7px 3px;
+  padding: 3px 6px 2px;
   vertical-align: baseline;
   font-size: 7px;
   line-height: 1;
-  letter-spacing: .14em;
-  color: var(--tape-dark);
-  background: repeating-linear-gradient(
-    -45deg,
-    var(--tape-amber) 0 8px,
-    var(--tape-dark) 8px 15px);
-  border: 1px solid rgba(255, 194, 71, .85);
-  box-shadow: 0 0 12px rgba(255, 176, 58, .38);
-  transform: rotate(-2deg);
-  /* An amber knockout so the black letters stay readable where a dark stripe
-     runs underneath them. */
-  text-shadow:
-     1px 0 0 var(--tape-amber), -1px 0 0 var(--tape-amber),
-     0 1px 0 var(--tape-amber),  0 -1px 0 var(--tape-amber);
+  letter-spacing: .12em;
+  color: var(--ink);
+  background: var(--cyan);
+  box-shadow: 0 0 12px rgba(35, 229, 255, .5);
 }
 
 .woks-note { margin: 0; font-size: .95rem; color: var(--paper-dim); }
+
+/* Body copy laid straight onto the scene. The sun is a fixed layer, so as the
+   page scrolls it ends up behind different paragraphs; a dark halo keeps them
+   readable wherever it lands. */
+.woks-note,
+.gate-note,
+.docs-intro,
+.docs-note,
+.docs-list li {
+  text-shadow:
+    0 0 6px  rgba(3, 0, 12, 1),
+    0 0 12px rgba(3, 0, 12, 1),
+    0 2px 10px rgba(3, 0, 12, .95),
+    0 0 26px rgba(3, 0, 12, .9);
+}
 
 /* ==========================================================================
    5b. Desk scene — the guy eating ramen at his terminal
@@ -790,6 +789,175 @@ body.booting .footer { animation: boot-in .9s ease-out both; }
 }
 
 .footer .sep { color: var(--magenta); }
+
+.footer a {
+  color: var(--paper-dim);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color .2s, border-color .2s;
+}
+
+.footer a:hover {
+  color: var(--cyan);
+  border-bottom-color: var(--cyan);
+}
+
+/* ==========================================================================
+   5c. Install + docs
+   ========================================================================== */
+
+.install, .docs {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 56px clamp(18px, 5vw, 32px) 8px;
+  text-align: center;
+}
+
+.docs { padding-bottom: 64px; }
+
+.section-label {
+  display: inline-block;
+  padding: 7px 14px 6px;
+  background: rgba(8, 2, 24, .7);
+  backdrop-filter: blur(5px);
+  margin: 0 0 16px;
+  font-family: var(--pixel);
+  font-size: 10px;
+  letter-spacing: .2em;
+  color: var(--magenta);
+  text-shadow:
+    0 0 14px rgba(255, 45, 149, .85),
+    0 2px 10px rgba(3, 0, 12, .95),
+    0 0 26px rgba(3, 0, 12, .85);
+}
+
+/* The access notice is the one line on this section that must never be missed,
+   so it gets a panel of its own rather than trusting the backdrop. */
+.gate {
+  margin: 0 auto 22px;
+  max-width: 56ch;
+  padding: 14px 22px;
+  font-size: 1rem;
+  color: var(--paper);
+  background: rgba(8, 2, 24, .74);
+  border: 1px solid rgba(255, 45, 149, .34);
+  box-shadow: 0 0 0 1px rgba(35, 229, 255, .12), 0 14px 40px rgba(0, 0, 0, .55);
+  backdrop-filter: blur(7px);
+}
+
+.gate b { color: var(--amber); }
+
+.gate a, .docs-note a {
+  color: var(--cyan);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(35, 229, 255, .5);
+}
+
+.gate a:hover { text-shadow: 0 0 12px rgba(35, 229, 255, .9); }
+
+.gate-note, .docs-intro, .docs-note {
+  margin: 16px auto 0;
+  max-width: 56ch;
+  font-size: .95rem;
+  color: var(--paper-dim);
+}
+
+.docs-intro { margin: 0 auto 20px; }
+
+.install code, .docs code {
+  font-family: var(--mono);
+  font-size: .92em;
+  color: var(--cyan);
+}
+
+/* --- the copy button, sitting in the code card's title bar --------------- */
+
+.copy-btn {
+  margin-left: auto;
+  padding: 5px 10px;
+  font-family: var(--pixel);
+  font-size: 7px;
+  letter-spacing: .12em;
+  color: var(--paper);
+  background: rgba(255, 45, 149, .16);
+  border: 1px solid rgba(255, 45, 149, .55);
+  cursor: pointer;
+  transition: background .2s, color .2s, box-shadow .2s;
+}
+
+.copy-btn:hover {
+  background: rgba(255, 45, 149, .32);
+  box-shadow: 0 0 14px rgba(255, 45, 149, .55);
+}
+
+.copy-btn.is-copied {
+  color: var(--ink);
+  background: #46f08a;
+  border-color: #46f08a;
+  box-shadow: 0 0 16px rgba(70, 240, 138, .6);
+}
+
+.c-cm { color: #7b6b93; }
+
+/* --- what ships in the box ---------------------------------------------- */
+
+.docs-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+  border-top: 1px solid rgba(35, 229, 255, .22);
+}
+
+.docs-list li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  padding: 11px 4px;
+  border-bottom: 1px solid rgba(35, 229, 255, .16);
+  font-size: .95rem;
+  color: var(--paper-dim);
+}
+
+.docs-list b {
+  flex: 0 0 auto;
+  min-width: 15ch;
+  font-family: var(--mono);
+  font-weight: 600;
+  color: var(--cyan);
+}
+
+.docs-list span { flex: 1 1 22ch; }
+
+/* ==========================================================================
+   6b. Focus
+   Keyboard focus has to survive a dark page with custom-painted controls, so
+   it gets its own ring rather than leaning on the UA default. :focus-visible
+   only, so a mouse click doesn't leave a ring behind.
+   ========================================================================== */
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+.topnav a:focus-visible {
+  color: var(--cyan);
+  text-shadow: 0 0 12px rgba(35, 229, 255, .9);
+}
+
+/* The buttons already glow magenta, so a cyan ring on top of the magenta halo
+   reads as mush — they take a white ring and their own hover lift instead. */
+.btn:focus-visible {
+  outline-color: #fff;
+  outline-offset: 4px;
+  transform: translateY(-3px);
+  box-shadow: 0 0 26px var(--glow), 0 0 60px var(--glow), inset 0 0 18px rgba(255, 255, 255, .12);
+}
+
+.copy-btn:focus-visible { outline-color: #fff; }
 
 /* ==========================================================================
    7. Motion / small screens
