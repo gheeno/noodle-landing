@@ -25,6 +25,7 @@ assets/img/guy-eating-ramen.svg   the desk scene — pixel art, self-animating
 assets/img/og-cover.png           1200×630 social card
 assets/img/favicon.svg
 assets/fonts/                     self-hosted woff2 (SIL OFL), latin subset
+tools/og-card.html                source for the social card (not part of the site)
 ```
 
 Static. No build step, no framework, no third-party requests at runtime.
@@ -49,10 +50,21 @@ Pages is set to *Deploy from a branch* → `main`, folder `/ (root)`, so every p
 to `main` republishes. `.nojekyll` is committed so the `assets/` tree is served
 verbatim — without it Jekyll would swallow the fonts.
 
-The social card is a static render of the hero, not a live screenshot: rebuild it
-by pointing a headless browser at a 1200×630 page and re-exporting
-`assets/img/og-cover.png`. The absolute URLs in the `og:` tags are tied to the
-Pages domain, so they need updating if the site moves.
+The social card is a static render of the hero, not a live screenshot. Its
+source is `tools/og-card.html` — the same stylesheet the hero uses, laid out as
+a fixed 1200×630 plate — so re-exporting it keeps the card and the page in step:
+
+```bash
+python3 -m http.server 8000
+chrome --headless --force-prefers-reduced-motion \
+       --window-size=1200,630 --screenshot=assets/img/og-cover.png \
+       http://127.0.0.1:8000/tools/og-card.html
+```
+
+`--force-prefers-reduced-motion` is what makes the export deterministic: it
+freezes the steam, the float and the halo pulse instead of catching whatever
+frame the screenshot lands on. The absolute URLs in the `og:` tags are tied to
+the Pages domain, so they need updating if the site moves.
 
 ---
 

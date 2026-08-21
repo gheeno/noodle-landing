@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Noodle — social card source (1200×630)</title>
+
+<!--
+  Source for assets/img/og-cover.png.
+
+  It is not part of the site — nothing links to it. It exists so the social
+  card can be re-exported from the same stylesheet the hero uses, instead of
+  being redrawn by hand every time the hero changes. Serve the repo and render
+  this page at exactly 1200×630:
+
+    python3 -m http.server 8000
+    chrome --headless --force-prefers-reduced-motion \
+           --window-size=1200,630 --screenshot=assets/img/og-cover.png \
+           http://127.0.0.1:8000/tools/og-card.html
+
+  --force-prefers-reduced-motion matters: it freezes the steam, the float and
+  the halo pulse, so the export is deterministic rather than whatever frame the
+  screenshot happened to catch.
+-->
+
+<link rel="stylesheet" href="../assets/css/styles.css">
+<style>
+  /* The card is a fixed 1200×630 plate, not a responsive page, so the hero's
+     centred column becomes two columns and the vw-based clamps settle at their
+     ceilings. Everything else is inherited from styles.css on purpose. */
+
+  html, body {
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+  }
+
+  .og {
+    position: relative;
+    z-index: 3;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 430px 1fr;
+    align-items: center;
+    gap: 48px;
+    width: 1200px;
+    height: 630px;
+    padding: 0 70px 0 34px;
+  }
+
+  .og .logo-stage {
+    width: 360px;
+    margin: 0 auto;
+  }
+
+  .og-copy { text-align: left; }
+
+  /* The sun sits directly behind this line on the card, and cyan on orange is
+     unreadable — same dark pill the page's section labels use. */
+  .og-copy .kicker {
+    display: inline-block;
+    margin: 0 0 16px;
+    padding: 7px 13px 6px;
+    background: rgba(8, 2, 24, .72);
+    backdrop-filter: blur(5px);
+  }
+  .og-copy .wordmark { margin: 0 0 20px; }
+
+  .og-copy .tagline {
+    max-width: 620px;
+    margin: 0;
+    line-height: 1.45;
+  }
+
+  .og-rule {
+    width: 280px;
+    height: 2px;
+    margin: 26px 0 0;
+    background: linear-gradient(90deg, var(--cyan), var(--magenta), transparent);
+    box-shadow: 0 0 14px rgba(255, 45, 149, .6);
+  }
+</style>
+</head>
+<body>
+
+<div class="scene" aria-hidden="true">
+  <div class="sky"></div>
+  <div class="stars"></div>
+  <div class="sun"></div>
+  <div class="city"></div>
+  <div class="ridge"></div>
+  <div class="floor"><div class="floor-grid"></div></div>
+  <div class="haze haze-a"></div>
+  <div class="haze haze-b"></div>
+</div>
+
+<div class="crt" aria-hidden="true">
+  <div class="scanlines"></div>
+  <div class="vignette"></div>
+</div>
+
+<div class="og">
+
+  <div class="logo-stage">
+    <div class="logo-halo"></div>
+    <img class="logo" src="../assets/img/noodle-bowl-hot.svg"
+         alt="" width="320" height="240">
+  </div>
+
+  <div class="og-copy">
+    <p class="kicker">TEST FRAMEWORK &nbsp;//&nbsp; v2.9.0 ALPHA</p>
+
+    <h1 class="wordmark">
+      <span class="wordmark-text" data-text="NOODLE">NOODLE</span>
+    </h1>
+
+    <p class="tagline">
+      A capability for <b>AI</b> and <b>humans</b> to generate
+      <b class="hot">deterministic tests</b> using plain&nbsp;English&nbsp;BDD.
+    </p>
+
+    <div class="og-rule"></div>
+  </div>
+
+</div>
+
+</body>
+</html>
