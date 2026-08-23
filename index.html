@@ -71,7 +71,7 @@
     <!-- Tracks the latest release tag (`git tag --sort=-v:refname | head -1`),
          not main. The README tells pilot testers to pin to a tag, so main's
          version is never the one anyone is actually running. -->
-    <p class="kicker">TEST FRAMEWORK &nbsp;//&nbsp; v4.1.0 ALPHA</p>
+    <p class="kicker">TEST FRAMEWORK &nbsp;//&nbsp; v4.2.0 ALPHA</p>
 
     <h1 class="wordmark" data-parallax="8">
       <span class="wordmark-text" data-text="NOODLE">NOODLE</span>
@@ -131,6 +131,7 @@
     <ul class="wok-list">
       <li>WEB</li>
       <li>API</li>
+      <li>MESSAGING <span class="wok-note">KAFKA &middot; RABBITMQ</span></li>
       <li>MOBILE <span class="wok-note">ANDROID VERIFIED</span></li>
       <li>DESKTOP <span class="wok-note">MACOS VERIFIED</span></li>
       <li>PERFORMANCE</li>
@@ -156,7 +157,7 @@
 <pre class="code" id="install-cmd"><code><span class="c-cm"># macOS &mdash; the Windows 11 and Linux paths ship in the README</span>
 curl -LsSf https://astral.sh/uv/install.sh | sh
 git clone https://github.com/gheeno/noodle.git &amp;&amp; cd noodle
-git checkout 4.1.0-alpha  <span class="c-cm"># pin to a release &mdash; main moves several times a day</span>
+git checkout 4.2.0-alpha  <span class="c-cm"># pin to a release &mdash; main moves several times a day</span>
 uv venv &amp;&amp; uv tool install --editable <span class="c-str">".[all]"</span> --with-executables-from playwright
 playwright install chromium
 noodle doctor</code></pre>
@@ -172,20 +173,20 @@ noodle doctor</code></pre>
   <section class="docs" id="docs">
     <p class="section-label">WHAT SHIPS WITH IT</p>
     <p class="docs-intro">
-      43 documents ride along inside the framework. The ones you'd open first:
+      46 documents ride along inside the framework. The ones you'd open first:
     </p>
 
     <ul class="docs-list">
       <li><b>quickstart.md</b> <span>Install to one passing test, in about thirty minutes.</span></li>
       <li><b>manual.md</b> <span>The full manual &mdash; setup, writing tests, RCA, syntax, CI.</span></li>
       <li><b>cli-reference.md</b> <span>Every <code>noodle</code> command and flag, with sample output.</span></li>
-      <li><b>woks.md</b> <span>The five work areas, and the tags that route a scenario to one.</span></li>
+      <li><b>woks.md</b> <span>The six work areas, and the tags that route a scenario to one.</span></li>
       <li><b>steps_dictionary.md</b> <span>Every built-in step pattern, with its phrasings and examples.</span></li>
       <li><b>mcp-guide.md</b> <span>Drive Noodle from an AI agent over MCP, or over plain HTTP.</span></li>
     </ul>
 
     <p class="docs-note">
-      &hellip;and thirty-seven more, all in <code>docs/</code> &mdash; readable
+      &hellip;and forty more, all in <code>docs/</code> &mdash; readable
       the moment you have access.
     </p>
   </section>
