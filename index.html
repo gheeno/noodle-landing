@@ -71,7 +71,7 @@
     <!-- Tracks the latest release tag (`git tag --sort=-v:refname | head -1`),
          not main. The README tells pilot testers to pin to a tag, so main's
          version is never the one anyone is actually running. -->
-    <p class="kicker">TEST FRAMEWORK &nbsp;//&nbsp; v4.5.0 ALPHA</p>
+    <p class="kicker">TEST FRAMEWORK &nbsp;//&nbsp; v4.5.1 ALPHA</p>
 
     <h1 class="wordmark" data-parallax="8">
       <span class="wordmark-text" data-text="NOODLE">NOODLE</span>
@@ -157,7 +157,7 @@
 <pre class="code" id="install-cmd"><code><span class="c-cm"># macOS &mdash; the Windows 11 and Linux paths ship in the README</span>
 curl -LsSf https://astral.sh/uv/install.sh | sh
 git clone https://github.com/gheeno/noodle.git &amp;&amp; cd noodle
-git checkout 4.5.0-alpha  <span class="c-cm"># pin to a release &mdash; main moves several times a day</span>
+git checkout 4.5.1-alpha  <span class="c-cm"># pin to a release &mdash; main moves several times a day</span>
 uv venv &amp;&amp; uv tool install --editable <span class="c-str">".[all]"</span> --with-executables-from playwright
 playwright install chromium
 noodle doctor</code></pre>
