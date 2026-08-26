@@ -664,7 +664,7 @@ body.booting .footer { animation: boot-in .9s ease-out both; }
   backdrop-filter: blur(5px);
 }
 
-/* Every wok ships. Three of them carry a chip narrowing what the wok covers —
+/* Every wok ships. Four of them carry a chip narrowing what the wok covers —
    how far it has been verified in the wild, or which backends it speaks to —
    so the limit is stated rather than the wok hidden. */
 
